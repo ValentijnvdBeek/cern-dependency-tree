@@ -27,7 +27,7 @@ class SimpleAlgorithm:
         Returns:
           A graph object with edges for all dependencies
         """
-        g = Graph()
+        g = Graph([], [])
         for package, deps in data.items():
             g.add_node(package)
             SimpleAlgorithm._recurse(package,

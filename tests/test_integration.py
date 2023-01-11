@@ -5,7 +5,7 @@ import pytest
 
 from .context import dep_graph
 
-Edge = dep_graph.Edge
+Edge = lambda x, y: dep_graph.Edge(Node(x), Node(y))
 Node = dep_graph.Node
 Graph = dep_graph.Graph
 get_graph = dep_graph.get_graph

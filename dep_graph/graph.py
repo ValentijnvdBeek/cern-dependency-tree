@@ -18,6 +18,9 @@ class Node:
 
     def __eq__(self, other):
         """Compare identity by checking if they have the same name."""
+        if type(other) == str:
+            return self.name == other
+
         return other.name == self.name
 
 
@@ -50,7 +53,7 @@ class Edge:
 
 class Graph:
     """Graph containing nodes and edges."""
-    def __init__(self, nodes: list[str] = [], edges: list[Edge] = []):
+    def __init__(self, nodes: list[str], edges: list[Edge]):
         """Creates a graph.
 
         Args:
@@ -58,14 +61,13 @@ class Graph:
            edges: Edges between nodes
         """
         self._nodes = dict([(n, Node(n)) for n in nodes])
-        self._edges = set(edges)
+        self._edges = edges
 
     def add_edge(self, source: str, target: str):
         """Creates an edge between a `source` and `target` node."""
         edge = Edge(Node(source), Node(target))
-
         if edge not in self._edges:
-            self._edges.add(edge)
+            self._edges.append(edge)
 
     def add_node(self, name: str):
         """Adds a node to the graph."""
@@ -91,7 +93,7 @@ class Graph:
     def _topo_print_helper(self, edges: List[Edge], times: int = 1):
         """Prints all the edges in the graph at the right level."""
         for edge in edges:
-            print(f"{'  ' * times}- {edge.target}")
+            print(f"{'  ' * times}- {edge.target.name}")
             self._topo_print_helper(self._get_edges(edge.target),
                                     times=times + 1)
 
