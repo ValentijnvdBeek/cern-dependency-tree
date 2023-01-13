@@ -143,7 +143,7 @@ def test_maximum_connected():
         "pkg5": []
     }
 
-    graph = get_graph(content)
+    graph = get_graph(content, algorithm="kahn")
     edges = [
         Edge("pkg1", "pkg2"),
         Edge("pkg1", "pkg3"),
@@ -182,7 +182,7 @@ def test_long_cycle():
     }
 
     with pytest.raises(Exception):
-        get_graph(content)
+        get_graph(content, algorithm="kahn")
 
 
 def test_complicated():
@@ -195,6 +195,7 @@ def test_complicated():
         "p6": ["p4"],
         "p7": ["p8", "p9", "p10"],
         "p8": ["p11", "p12"],
+        "p9": [],
         "p10": [],
         "p11": ["p13"],
         "p12": [],

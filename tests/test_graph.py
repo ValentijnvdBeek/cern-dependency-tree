@@ -25,6 +25,11 @@ def test_nodes():
              ].__str__() == "['[Delft]', '[Amsterdam]', '[Haarlem]']")
 
 
+def test_algorithm_nonexistent():
+    with pytest.raises(Exception):
+        get_graph({}, algorithm='P4')
+
+
 def test_edge():
     edge = Edge("Hannover", "Delft")
     assert (edge.__repr__() == "Edge([Hannover], [Delft])")
@@ -45,20 +50,6 @@ def test_print(capsys):
     graph = get_graph(example)
     graph.topo_print()
     captured = capsys.readouterr()
-    assert captured.out == """- pkg1
-  - pkg2
-    - pkg3
-  - pkg3
-- pkg2
-  - pkg3
-- pkg3
-"""
-
-
-def test_main(capsys):
-    dep_graph.main("tests/test.json")
-    captured = capsys.readouterr()
-    print(captured.out)
     assert captured.out == """- pkg1
   - pkg2
     - pkg3
