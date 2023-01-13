@@ -86,22 +86,26 @@ class Graph:
         edges = [e.__repr__() for e in self._edges]
         return f"Graph({nodes}, {edges})"
 
-    def _get_edges(self, node: Node):
+    def get_edges_source(self, node: Node):
         """Gets all the edges for the given node is the source."""
         return [e for e in self._edges if e.source == node]
+
+    def get_edges_target(self, node: Node):
+        """Gets all the edges for the given node is the target."""
+        return [e for e in self._edges if e.target == node]
 
     def _topo_print_helper(self, edges: List[Edge], times: int = 1):
         """Prints all the edges in the graph at the right level."""
         for edge in edges:
             print(f"{'  ' * times}- {edge.target.name}")
-            self._topo_print_helper(self._get_edges(edge.target),
+            self._topo_print_helper(self.get_edges_source(edge.target),
                                     times=times + 1)
 
     def topo_print(self):
         """Prints the graph using the topological order."""
         for node in self._nodes:
             print(f"- {node}")
-            self._topo_print_helper(self._get_edges(node))
+            self._topo_print_helper(self.get_edges_source(node))
 
     def __eq__(self, other):
         """Checks equality of graphs by comparing the edges & nodes."""

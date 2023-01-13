@@ -21,7 +21,7 @@ class SimpleAlgorithm:
         Args:
           data: dictionary containing the dependencies.
 
-        Throws:
+        Raises:
           Exception if there is a cycle in the graph
 
         Returns:

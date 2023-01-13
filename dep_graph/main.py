@@ -3,6 +3,7 @@ import json
 import os
 import tempfile
 
+from .algorithms.kahn import KahnAlgorithm
 from .algorithms.simple import SimpleAlgorithm
 from .graph import Graph
 
@@ -27,14 +28,21 @@ def _delete_temp_file(filename):
     os.unlink(filename)
 
 
-def generate_graph(filename: str) -> Graph:
+def generate_graph(filename: str, algorithm="simple") -> Graph:
     """Generates a graph from a file containing json data."""
     data = _load_json(filename)
-    graph = SimpleAlgorithm.run(data)
+
+    graph = None
+    if algorithm == "simple":
+        graph = SimpleAlgorithm.run(data)
+    elif algorithm == "kahn":
+        graph = KahnAlgorithm.run(data)
+    else:
+        raise Exception(f"No such algorithm: {algorithm}")
     return graph
 
 
-def get_graph(content):
+def get_graph(content, algorithm="simple"):
     """Generates graphs based on Python dictionaries.
 
     Writes a Python dictionary describing a dependency graph onto a
@@ -42,12 +50,6 @@ def get_graph(content):
     file is deleted, yielding a correctly generated graph.
     """
     filename = _create_temp_file(json.dumps(content))
-    graph = generate_graph(filename)
+    graph = generate_graph(filename, algorithm)
     _delete_temp_file(filename)
     return graph
-
-
-def main(filename: str) -> None:
-    """Prints a topologically sorted dependency graph based on a json file."""
-    graph = generate_graph(filename)
-    graph.topo_print()
